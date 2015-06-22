@@ -9,13 +9,14 @@ RUN /bin/echo -e "\
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python-pip python-dev \
     supervisor git sudo ssh
-RUN pip install buildbot
+RUN pip install buildbot_slave
 
-RUN useradd buildbot
+RUN groupadd -r buildbot \
+    && useradd -r -d /slave -g buildbot buildbot \
+    && mkdir /slave
 
-WORKDIR /master
-VOLUME /master
-EXPOSE 8010 9989
+WORKDIR /slave
+VOLUME /slave
 
 COPY run.sh /
 CMD ["/run.sh"]
