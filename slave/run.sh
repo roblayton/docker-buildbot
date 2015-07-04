@@ -16,6 +16,9 @@ EOF
     [ -n "$SLAVE_ADMIN" ] && echo "$SLAVE_ADMIN" > /slave/info/admin
     [ -n "$SLAVE_DESCRIPTION" ] && echo "$SLAVE_DESCRIPTION" > /slave/info/host
     chown buildbot.buildbot -R /slave
+else
+    echo "Upgrading buildbot slave"
+    buildslave upgrade-slave /slave
 fi
 
 exec buildslave start --nodaemon $SLAVE_ARGS
